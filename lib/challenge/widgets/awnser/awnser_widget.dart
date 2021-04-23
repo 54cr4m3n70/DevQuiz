@@ -5,11 +5,15 @@ class AwnserWidget extends StatelessWidget {
   final String title;
   final bool isRight;
   final bool isSelected;
+  final bool disabled;
+  final VoidCallback onTap;
 
   const AwnserWidget({
     required this.title,
+    required this.onTap,
     this.isRight = false,
     this.isSelected = false,
+    this.disabled = false,
   });
 
   Color get _selectedColorRight =>
@@ -33,48 +37,58 @@ class AwnserWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      child: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: isSelected ? _selectedColorCardRight : AppColors.white,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.fromBorderSide(
-            BorderSide(
-              color: isSelected ? _selectedBorderCardRight : AppColors.border,
-            ),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Text(
-                title,
-                style:
-                    isSelected ? _selectedTextStyleRight : AppTextStyles.body,
-              ),
-            ),
-            Container(
-              width: 24,
-              height: 24,
-              decoration: BoxDecoration(
-                color: isSelected ? _selectedColorRight : AppColors.white,
-                borderRadius: BorderRadius.circular(500),
-                border: Border.fromBorderSide(
-                  BorderSide(
-                    color: isSelected ? _selectedBorderRight : AppColors.border,
-                  ),
+      child: IgnorePointer(
+        ignoring: disabled,
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: isSelected ? _selectedColorCardRight : AppColors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.fromBorderSide(
+                BorderSide(
+                  color:
+                      isSelected ? _selectedBorderCardRight : AppColors.border,
                 ),
               ),
-              child: isSelected
-                  ? Icon(
-                      _selectedIconRight,
-                      size: 16,
-                      color: AppColors.white,
-                    )
-                  : null,
-            )
-          ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: isSelected
+                        ? _selectedTextStyleRight
+                        : AppTextStyles.body,
+                  ),
+                ),
+                Container(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: isSelected ? _selectedColorRight : AppColors.white,
+                    borderRadius: BorderRadius.circular(500),
+                    border: Border.fromBorderSide(
+                      BorderSide(
+                        color: isSelected
+                            ? _selectedBorderRight
+                            : AppColors.border,
+                      ),
+                    ),
+                  ),
+                  child: isSelected
+                      ? Icon(
+                          _selectedIconRight,
+                          size: 16,
+                          color: AppColors.white,
+                        )
+                      : null,
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
